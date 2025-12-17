@@ -1,4 +1,4 @@
-# Todo Application - Fullstack Monorepo (Vercel)
+# Komdigi-FSD-advance-monorepo-todo-app-vercel-Finished
 
 Fullstack Todo application dengan authentication, deployed menggunakan Vercel (Backend + Frontend) dengan CI/CD via GitHub Actions.
 
@@ -18,6 +18,7 @@ Fullstack Todo application dengan authentication, deployed menggunakan Vercel (B
 ## Tech Stack
 
 ### Backend
+
 - Node.js 22 LTS
 - Express 5 - Web framework
 - MongoDB dengan Mongoose - Database
@@ -25,12 +26,14 @@ Fullstack Todo application dengan authentication, deployed menggunakan Vercel (B
 - Vercel Serverless Functions
 
 ### Frontend
+
 - React 19 - UI library
 - Vite - Build tool
 - React Router - Routing
 - Axios - HTTP client
 
 ### Infrastructure
+
 - Vercel - Backend (Serverless) + Frontend (Static Site)
 - MongoDB Atlas - Database (Free Tier)
 - GitHub Actions - CI/CD Pipeline
@@ -39,7 +42,7 @@ Fullstack Todo application dengan authentication, deployed menggunakan Vercel (B
 ## Project Structure
 
 ```
-monorepo-todo-auth-vercel-finished/
+Komdigi-FSD-advance-monorepo-todo-app-vercel-Finished/
 ├── apps/
 │   ├── backend/              # Express API server (Vercel Serverless)
 │   │   ├── api/              # Vercel serverless function wrapper
@@ -71,6 +74,7 @@ Sebelum memulai, pastikan Anda sudah memiliki:
 - GitHub account (untuk CI/CD)
 
 **PENTING: Install pnpm terlebih dahulu**
+
 ```bash
 npm install -g pnpm
 ```
@@ -81,7 +85,7 @@ npm install -g pnpm
 
 ```bash
 git clone <repository-url>
-cd monorepo-todo-auth-vercel-finished
+cd Komdigi-FSD-advance-monorepo-todo-app-vercel-Finished
 ```
 
 ### 2. Install Dependencies
@@ -94,12 +98,14 @@ pnpm install
 ### 3. Setup Environment Variables
 
 **Backend** (apps/backend/.env):
+
 ```bash
 cd apps/backend
 cp .env.example .env
 ```
 
 Edit file `.env` dan isi dengan:
+
 ```env
 PORT=3001
 NODE_ENV=development
@@ -109,17 +115,23 @@ JWT_EXPIRES_IN=7d
 ```
 
 **Frontend** (apps/frontend/.env):
+
 ```bash
 cd ../frontend
 cp .env.example .env
 ```
 
 Edit file `.env` dan isi dengan:
+
 ```env
 VITE_API_URL=http://localhost:3001
 ```
 
-### 4. Setup MongoDB Atlas
+### 4. Setup MongoDB
+
+Project ini memerlukan MongoDB untuk menyimpan data. Anda dapat menggunakan MongoDB Atlas (cloud) atau MongoDB lokal.
+
+**Opsi A (RECOMMENDED): Menggunakan MongoDB Atlas (Cloud)**
 
 1. Buat account di https://cloud.mongodb.com (gratis)
 2. Create cluster baru (pilih Free Tier M0)
@@ -129,9 +141,40 @@ VITE_API_URL=http://localhost:3001
 6. Copy connection string ke `MONGODB_URI` di file `.env` backend
 7. Ganti `<username>`, `<password>`, dan nama database sesuai kebutuhan
 
+**Opsi B: Menggunakan MongoDB Lokal dengan MongoDB Compass**
+
+1. Install MongoDB Compass dari https://www.mongodb.com/try/download/compass
+2. Buka MongoDB Compass
+3. Connect ke database lokal: `mongodb://localhost:27017`
+4. Jika berhasil connect, berarti MongoDB sudah running
+5. Buat database baru (contoh: `todo`) di MongoDB Compass
+6. Set `MONGODB_URI` di file `.env` backend: `mongodb://localhost:27017/todo`
+
+**Opsi C: Menggunakan MongoDB Service (Windows/macOS)**
+
+1. Pastikan MongoDB service sudah running di system services
+2. Windows: Check Services app, cari "MongoDB" dan pastikan status "Running"
+3. macOS: Check Activity Monitor atau system preferences untuk MongoDB service
+4. Set `MONGODB_URI` di file `.env` backend: `mongodb://localhost:27017/todo`
+
+**Opsi D: Menggunakan mongod Command (Jika Opsi Lain Tidak Tersedia)**
+
+1. Buka terminal baru
+2. Jalankan: `mongod`
+3. Pastikan MongoDB service running (tidak ada error)
+4. Set `MONGODB_URI` di file `.env` backend: `mongodb://localhost:27017/todo`
+
+**CATATAN PENTING:**
+
+- Jika mongod tidak jalan di local, tidak perlu dipaksakan
+- Gunakan MongoDB Compass untuk cek apakah database sudah accessible
+- Atau gunakan MongoDB Atlas (cloud) sebagai alternatif yang lebih mudah
+- Untuk development, MongoDB Atlas Free Tier sudah cukup
+
 ### 5. Jalankan Development Server
 
 **Terminal 1 - Backend:**
+
 ```bash
 cd apps/backend
 pnpm dev
@@ -140,6 +183,7 @@ pnpm dev
 Server backend akan berjalan di: http://localhost:3001
 
 **Terminal 2 - Frontend:**
+
 ```bash
 cd apps/frontend
 pnpm dev
@@ -152,6 +196,7 @@ Server frontend akan berjalan di: http://localhost:5173
 **Menggunakan Browser:**
 
 Buka browser dan akses:
+
 - Frontend: http://localhost:5173
 - Backend Health: http://localhost:3001/health
 - Backend API Info: http://localhost:3001
@@ -170,17 +215,20 @@ Buka browser dan akses:
 **Cara Test dengan Postman:**
 
 Step 1: Test Health Check
+
 - Klik "Health Check" > "Root - API Info"
 - Klik tombol "Send"
 - Verifikasi response berisi informasi API
 
 Step 2: Register User Baru
+
 - Klik "Auth" > "Register"
 - Di tab "Body", edit email dan password sesuai kebutuhan
 - Klik "Send"
 - Verifikasi response status 201 dan dapat token
 
 Step 3: Login
+
 - Klik "Auth" > "Login"
 - Edit email dan password (sama dengan yang digunakan saat register)
 - Klik "Send"
@@ -188,18 +236,21 @@ Step 3: Login
 - Verifikasi response status 200
 
 Step 4: Test Todos Endpoints (Butuh Token)
+
 - Klik "Todos" > "Get All Todos"
 - Token sudah otomatis ditambahkan di Authorization header
 - Klik "Send"
 - Verifikasi response berisi array todos (kosong jika belum ada)
 
 Step 5: Create Todo
+
 - Klik "Todos" > "Create Todo"
 - Edit title di body request
 - Klik "Send"
 - Copy `_id` dari response untuk testing update/delete
 
 Step 6: Update Todo
+
 - Klik "Todos" > "Update Todo"
 - Klik tab "Params"
 - Ganti `:id` dengan todo ID yang di-copy tadi
@@ -207,6 +258,7 @@ Step 6: Update Todo
 - Klik "Send"
 
 Step 7: Delete Todo
+
 - Klik "Todos" > "Delete Todo"
 - Ganti `:id` dengan todo ID
 - Klik "Send"
@@ -214,6 +266,7 @@ Step 7: Delete Todo
 **Ganti Base URL untuk Production:**
 
 Setelah deploy ke Vercel, update base URL:
+
 1. Klik collection "Todo API - Vercel"
 2. Klik tab "Variables"
 3. Ganti value `base_url` dari `http://localhost:3001` ke URL Vercel (contoh: `https://your-backend.vercel.app`)
@@ -271,12 +324,14 @@ Go to: GitHub Repository > Settings > Secrets and variables > Actions
 Tambahkan secrets berikut:
 
 **Required:**
+
 - `VERCEL_TOKEN` - Generate di https://vercel.com/account/tokens
 - `VERCEL_USER_ID` - Copy dari Vercel Settings > General (User ID)
 - `VERCEL_BACKEND_PROJECT_ID` - Project ID backend dari Vercel
 - `VERCEL_FRONTEND_PROJECT_ID` - Project ID frontend dari Vercel
 
 **Optional (jika ingin override):**
+
 - `MONGODB_URI`
 - `JWT_SECRET`
 - `JWT_EXPIRES_IN`
@@ -285,6 +340,7 @@ Tambahkan secrets berikut:
 ### Step 5: CI/CD Otomatis
 
 Setelah setup secrets, setiap push ke branch `main` akan otomatis:
+
 1. Run tests
 2. Build frontend
 3. Deploy frontend ke Vercel
@@ -295,6 +351,7 @@ Setelah setup secrets, setiap push ke branch `main` akan otomatis:
 Aplikasi ini menggunakan **Winston** untuk detailed logging yang dapat dilihat di Vercel atau console development.
 
 ### Log Levels
+
 - `error` - Error dan exceptions (status code >= 500)
 - `warn` - Warning (status code >= 400)
 - `http` - HTTP requests (status code 2xx-3xx)
@@ -302,15 +359,18 @@ Aplikasi ini menggunakan **Winston** untuk detailed logging yang dapat dilihat d
 - `debug` - Debug information
 
 ### Environment Variable
+
 ```env
 LOG_LEVEL=info  # Optional, default: info
                 # Options: error, warn, info, http, debug
 ```
 
 ### Format Log
+
 Setiap log memiliki format:
+
 ```
-2024-01-15 10:30:45 [INFO]: Message
+2025-01-15 10:30:45 [INFO]: Message
 {
   "metadata": "additional context"
 }
@@ -319,6 +379,7 @@ Setiap log memiliki format:
 ### Log Types
 
 **HTTP Request Logs:**
+
 ```json
 {
   "method": "POST",
@@ -331,6 +392,7 @@ Setiap log memiliki format:
 ```
 
 **Database Operation Logs:**
+
 ```json
 {
   "operation": "create",
@@ -341,6 +403,7 @@ Setiap log memiliki format:
 ```
 
 **Authentication Logs:**
+
 ```json
 {
   "action": "login_success",
@@ -350,6 +413,7 @@ Setiap log memiliki format:
 ```
 
 **Error Logs (dengan stack trace):**
+
 ```json
 {
   "message": "Error message",
@@ -359,6 +423,7 @@ Setiap log memiliki format:
 ```
 
 ### Melihat Logs di Vercel
+
 1. Go to Vercel Dashboard
 2. Pilih project backend
 3. Klik tab "Logs"
@@ -369,6 +434,7 @@ Setiap log memiliki format:
 Semua endpoint yang tidak ditemukan akan mengembalikan response JSON yang jelas:
 
 ### Response Format
+
 ```json
 {
   "success": false,
@@ -407,26 +473,30 @@ Semua endpoint yang tidak ditemukan akan mengembalikan response JSON yang jelas:
       }
     }
   },
-  "timestamp": "2024-01-15T10:30:45.123Z"
+  "timestamp": "2025-01-15T10:30:45.123Z"
 }
 ```
 
 ### Testing 404 Response
+
 Gunakan Postman collection yang sudah disediakan di folder "Error Handling" untuk test 404 response.
 
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register user baru
 - `POST /api/auth/login` - Login user
 
 ### Todos (Protected - Butuh JWT Token)
+
 - `GET /api/todos` - Get semua todos
 - `POST /api/todos` - Create todo baru
 - `PUT /api/todos/:id` - Update todo
 - `DELETE /api/todos/:id` - Delete todo
 
 ### Health Check
+
 - `GET /` - API information
 - `GET /health` - Simple health check
 - `GET /health-checks` - Detailed health check
@@ -467,17 +537,19 @@ pnpm test:e2e
 
 Untuk setup lengkap, troubleshooting, dan advanced testing:
 
-📖 **[TESTING-GUIDE.md](./TESTING-GUIDE.md)** - Comprehensive testing documentation
+**[TESTING-GUIDE.md](./TESTING-GUIDE.md)** - Comprehensive testing documentation
 
 #### Backend Tests
+
 - **Location**: [`apps/backend/tests/`](./apps/backend/tests/)
 - **Documentation**: [`apps/backend/TESTING.md`](./apps/backend/TESTING.md)
 - **Coverage**: Models, Routes, Middleware
 
 #### Frontend E2E Tests
+
 - **Location**: [`apps/frontend/e2e/`](./apps/frontend/e2e/)
 - **Documentation**: [`apps/frontend/E2E-TESTING.md`](./apps/frontend/E2E-TESTING.md)
-- **Flow**: Register → CRUD → Logout → Login
+- **Flow**: Register - CRUD - Logout - Login
 
 **Note**: Known issues dengan Jest + ESM di Windows. Test files sudah lengkap dan valid, hanya ada compatibility issues. Lihat TESTING.md untuk details.
 
@@ -486,6 +558,7 @@ Untuk setup lengkap, troubleshooting, dan advanced testing:
 ### Issue: pnpm command not found
 
 **Solusi:**
+
 ```bash
 npm install -g pnpm
 ```
@@ -493,10 +566,12 @@ npm install -g pnpm
 ### Issue: MongoDB connection error - authentication failed
 
 **Kemungkinan Penyebab:**
+
 - Username atau password salah di connection string
 - User belum dibuat di MongoDB Atlas
 
 **Solusi:**
+
 1. Cek username dan password di MongoDB Atlas
 2. Pastikan connection string benar:
    ```
@@ -507,11 +582,13 @@ npm install -g pnpm
 ### Issue: MongoDB connection error - ENOTFOUND atau getaddrinfo
 
 **Kemungkinan Penyebab:**
+
 - Connection string salah
 - Cluster belum selesai dibuat
 - Network issue
 
 **Solusi:**
+
 1. Cek format connection string sudah benar
 2. Tunggu cluster selesai dibuat (3-5 menit)
 3. Test koneksi internet
@@ -519,31 +596,37 @@ npm install -g pnpm
 ### Issue: MongoDB connection error - timeout
 
 **Kemungkinan Penyebab:**
+
 - IP tidak ada di whitelist
 - Network firewall blocking
 
 **Solusi:**
+
 1. Di MongoDB Atlas > Network Access, tambahkan IP `0.0.0.0/0`
 2. Cek firewall atau antivirus tidak blocking port 27017
 
 ### Issue: JWT Authentication error - Invalid token
 
 **Kemungkinan Penyebab:**
+
 - JWT_SECRET berbeda antara backend yang generate token dan yang verify
 - Token sudah expired
 
 **Solusi:**
+
 1. Pastikan JWT_SECRET sama di semua environment
 2. Logout dan login ulang untuk dapat token baru
 
 ### Issue: Frontend tidak bisa connect ke Backend
 
 **Kemungkinan Penyebab:**
+
 - VITE_API_URL salah atau tidak diset
 - Backend tidak berjalan
 - CORS issue
 
 **Solusi:**
+
 1. Cek VITE_API_URL di `.env` frontend sudah benar
 2. Pastikan backend sudah berjalan
 3. Test backend di browser: `http://localhost:3001/health`
@@ -552,10 +635,12 @@ npm install -g pnpm
 ### Issue: Vercel Deployment Failed - Project Not Found
 
 **Kemungkinan Penyebab:**
+
 - Project ID salah
 - Token tidak punya akses ke project
 
 **Solusi:**
+
 1. Cek Project ID di Vercel Settings > General
 2. Pastikan VERCEL_TOKEN punya akses ke project
 3. Regenerate token jika perlu
@@ -564,6 +649,7 @@ npm install -g pnpm
 
 **Solusi:**
 Di `vercel.json`, pastikan ada:
+
 ```json
 {
   "installCommand": "npm install -g pnpm && pnpm install"
@@ -573,10 +659,12 @@ Di `vercel.json`, pastikan ada:
 ### Issue: Frontend build error - env variables undefined
 
 **Kemungkinan Penyebab:**
+
 - Environment variables di Vercel belum diset
 - Prefix `VITE_` tidak digunakan
 
 **Solusi:**
+
 1. Di Vercel Project Settings > Environment Variables, set `VITE_API_URL`
 2. Pastikan semua env variables di frontend pakai prefix `VITE_`
 3. Redeploy setelah set env variables
@@ -584,10 +672,12 @@ Di `vercel.json`, pastikan ada:
 ### Issue: Backend API error 500 saat production
 
 **Kemungkinan Penyebab:**
+
 - Environment variables tidak diset di Vercel
 - MongoDB connection string salah
 
 **Solusi:**
+
 1. Cek Vercel Functions logs untuk error detail
 2. Pastikan MONGODB_URI dan JWT_SECRET sudah diset di Vercel
 3. Test MongoDB connection string di local dulu
@@ -595,20 +685,24 @@ Di `vercel.json`, pastikan ada:
 ### Issue: CORS error saat frontend hit backend
 
 **Kemungkinan Penyebab:**
+
 - Backend tidak mengizinkan origin dari frontend
 
 **Solusi:**
 Backend sudah include middleware `cors()` tanpa restriction, seharusnya tidak ada CORS error. Jika masih ada:
+
 1. Cek browser console untuk error detail
 2. Pastikan frontend pakai HTTPS jika backend pakai HTTPS
 
 ### Issue: Todo tidak muncul setelah create
 
 **Kemungkinan Penyebab:**
+
 - Error saat save ke database tapi tidak keliatan di UI
 - Frontend tidak refresh data setelah create
 
 **Solusi:**
+
 1. Cek browser console untuk error
 2. Cek Network tab untuk response dari API
 3. Cek MongoDB Atlas untuk verify data tersimpan
@@ -619,6 +713,7 @@ Backend sudah include middleware `cors()` tanpa restriction, seharusnya tidak ad
 ### Vercel
 
 **Backend (Serverless Functions):**
+
 - 100GB bandwidth per bulan
 - 100GB-hours function execution per bulan
 - Unlimited deployments
@@ -626,6 +721,7 @@ Backend sudah include middleware `cors()` tanpa restriction, seharusnya tidak ad
 - No credit card required
 
 **Frontend (Static Site):**
+
 - Unlimited deployments
 - Unlimited bandwidth (personal projects)
 - Global CDN
